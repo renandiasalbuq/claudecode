@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cakto": {
+      "type": "http",
+      "url": "https://mcp.cakto.com.br",
+      "headers": {
+        "X-Cakto-Client-Id": "${CAKTO_CLIENT_ID}",
+        "X-Cakto-Client-Secret": "${CAKTO_CLIENT_SECRET}"
+      }
+    }
+  }
+}
