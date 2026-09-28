@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../produtos/src/fonts/local.css">
+<style>
+  :root{
+    --verde:#0E2B25; --verde2:#15392F; --verde3:#1E4A3D;
+    --ouro:#C9A45C; --ouro2:#E3C98F; --creme:#F3EDE2; --creme2:#E8DFCF;
+    --tinta:#10231E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#222;font-family:Inter,sans-serif;display:flex;flex-direction:column;gap:40px;padding:40px}
+  .capa{width:1080px;height:1080px;position:relative;overflow:hidden}
+  .serif{font-family:"Playfair Display",serif}
+  .kicker{font-size:22px;letter-spacing:.32em;text-transform:uppercase;font-weight:600}
+  .rule{height:2px;width:120px;background:var(--ouro)}
+  .grain::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .pills{display:flex;gap:14px;flex-wrap:wrap}
+  .pill{font-size:20px;font-weight:600;letter-spacing:.06em;padding:12px 22px;border-radius:999px}
+
+  /* ---------- PRINCIPAL ---------- */
+  #principal{background:radial-gradient(120% 90% at 85% 10%,#24584A 0%,var(--verde) 55%,#0A201B 100%);color:var(--creme)}
+  #principal .txt{position:absolute;left:84px;top:96px;width:560px}
+  #principal .kicker{color:var(--ouro2)}
+  #principal h1{font-size:92px;line-height:1.02;font-weight:700;margin:34px 0 30px;color:#FBF7EF}
+  #principal h1 em{font-style:italic;color:var(--ouro2);font-weight:600}
+  #principal .promessa{font-size:32px;line-height:1.35;color:#D9D2C4;margin-top:30px;font-weight:400}
+  #principal .promessa b{color:#FBF7EF;font-weight:600}
+  #principal .pills{position:absolute;left:84px;bottom:92px}
+  #principal .pill{border:1.5px solid rgba(227,201,143,.55);color:var(--ouro2)}
+  #principal .livro{position:absolute;right:-40px;top:190px;width:430px;height:600px;border-radius:10px 22px 22px 10px;
+    background:linear-gradient(135deg,#F7F1E6 0%,#E7DCC7 100%);transform:rotate(-6deg);
+    box-shadow:-30px 40px 80px rgba(0,0,0,.55), inset 14px 0 0 rgba(0,0,0,.06)}
+  #principal .livro .in{position:absolute;inset:44px 40px 40px 52px;color:var(--tinta)}
+  #principal .livro .t{font-size:17px;letter-spacing:.28em;font-weight:700;color:#8A6A2E}
+  #principal .livro .h{font-size:35px;line-height:1.08;margin:18px 0 26px;font-weight:700}
+  #principal .mes{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:8px}
+  #principal .mes span{height:34px;border-radius:6px;background:#D9CDB6}
+  #principal .mes span.on{background:var(--verde3)}
+  #principal .mes span.half{background:var(--ouro)}
+  #principal .leg{font-size:15px;color:#5C574C;margin-top:14px;font-weight:500}
+  #principal .check{margin-top:30px;font-size:19px;line-height:2.05;color:#2A2A24}
+  #principal .check i{display:inline-block;width:20px;height:20px;border-radius:5px;border:2px solid var(--verde3);margin-right:12px;vertical-align:-3px;position:relative}
+  #principal .check i.x{background:var(--verde3)}
+  #principal .check i.x::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #F3EDE2;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  #principal .selo{position:absolute;right:420px;bottom:250px;width:170px;height:170px;border-radius:50%;
+    background:var(--ouro);color:var(--verde);display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 20px 40px rgba(0,0,0,.4);transform:rotate(-10deg);text-align:center}
+  #principal .selo b{font-family:"Playfair Display",serif;font-size:60px;line-height:1}
+  #principal .selo small{font-size:16px;font-weight:700;letter-spacing:.14em;margin-top:4px}
+
+  /* ---------- BUMP 1: CALCULADORA ---------- */
+  #calc{background:linear-gradient(160deg,var(--creme) 0%,var(--creme2) 100%);color:var(--tinta)}
+  #calc .txt{position:absolute;left:84px;top:96px;width:500px}
+  #calc .kicker{color:#8A6A2E}
+  #calc h1{font-size:84px;line-height:1.03;font-weight:700;margin:30px 0 28px;color:var(--verde)}
+  #calc h1 em{font-style:italic;color:#8A6A2E;font-weight:600}
+  #calc .promessa{font-size:30px;line-height:1.4;color:#3E4A44}
+  #calc .pills{position:absolute;left:84px;bottom:92px}
+  #calc .pill{background:var(--verde);color:var(--creme)}
+  #calc .pill.o{background:transparent;border:1.5px solid var(--verde);color:var(--verde)}
+  #calc .dev{position:absolute;right:70px;top:150px;width:400px;height:780px;border-radius:52px;background:#0C1F1A;
+    padding:18px;box-shadow:0 50px 90px rgba(14,43,37,.35),0 0 0 2px #2B4A41 inset}
+  #calc .tela{width:100%;height:100%;border-radius:38px;background:linear-gradient(180deg,#123429 0%,#0E2B25 100%);padding:44px 30px;color:var(--creme)}
+  #calc .tela .lab{font-size:15px;letter-spacing:.2em;color:var(--ouro2);font-weight:600}
+  #calc .campo{margin-top:14px;background:rgba(243,237,226,.07);border:1px solid rgba(243,237,226,.14);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;font-size:17px;color:#CFC8BA}
+  #calc .campo span:last-child{width:90px;height:12px;border-radius:6px;background:rgba(243,237,226,.25);align-self:center}
+  #calc .campo span.ouro{background:var(--ouro)}
+  #calc .campo.mes{margin-top:22px;border-color:rgba(201,164,92,.5)}
+  #calc .res{margin-top:30px;border-radius:20px;padding:24px 22px;background:var(--ouro);color:var(--verde)}
+  #calc .res .l{font-size:14px;letter-spacing:.2em;font-weight:700}
+  #calc .res .v{font-family:"Playfair Display",serif;font-size:44px;font-weight:700;margin-top:8px}
+  #calc .res .s{font-size:16px;font-weight:600;margin-top:6px;opacity:.85}
+  #calc .bar{margin-top:26px;height:14px;border-radius:7px;background:rgba(243,237,226,.12);overflow:hidden}
+  #calc .bar i{display:block;height:100%;width:38%;background:linear-gradient(90deg,var(--ouro),var(--ouro2))}
+  #calc .barl{display:flex;justify-content:space-between;font-size:14px;color:#A9A293;margin-top:10px}
+
+  /* ---------- BUMP 2: 52 SEMANAS ---------- */
+  #semanas{background:radial-gradient(110% 90% at 15% 0%,#1E4A3D 0%,var(--verde) 55%,#0A201B 100%);color:var(--creme)}
+  #semanas .txt{position:absolute;left:84px;top:96px;width:900px}
+  #semanas .kicker{color:var(--ouro2)}
+  #semanas h1{font-size:88px;line-height:1.02;font-weight:700;margin:30px 0 22px;color:#FBF7EF}
+  #semanas h1 em{font-style:italic;color:var(--ouro2);font-weight:600}
+  #semanas .promessa{font-size:30px;line-height:1.4;color:#D9D2C4;width:760px}
+  #semanas .grid{position:absolute;left:84px;right:84px;top:530px;display:grid;grid-template-columns:repeat(13,1fr);gap:14px 14px;align-items:end}
+  #semanas .grid div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:78px}
+  #semanas .grid b{display:block;border-radius:50%;background:rgba(243,237,226,.13);border:1px solid rgba(243,237,226,.18)}
+  #semanas .grid b.on{background:var(--ouro);border-color:var(--ouro2);box-shadow:0 0 18px rgba(201,164,92,.35)}
+  #semanas .pills{position:absolute;left:84px;bottom:80px}
+  #semanas .pill{border:1.5px solid rgba(227,201,143,.55);color:var(--ouro2)}
+  #semanas .semlab{position:absolute;right:84px;bottom:92px;font-size:20px;color:#A9A293;letter-spacing:.08em}
+</style>
+</head>
+<body>
+
+<!-- PRINCIPAL -->
+<section class="capa" id="principal">
+  <div class="txt">
+    <div class="kicker">Guia Premium</div>
+    <h1 class="serif">Reserva de Emergência <em>do Zero</em></h1>
+    <div class="rule"></div>
+    <p class="promessa">Junte <b>6 meses de despesa</b> em <b>18 meses</b>, mesmo ganhando pouco.</p>
+  </div>
+  <div class="livro">
+    <div class="in">
+      <div class="t">PLANO DE 18 MESES</div>
+      <div class="h serif">Sua reserva,<br>mês a mês</div>
+      <div class="mes">
+        <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+        <span class="on"></span><span class="half"></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="leg">Cada quadrado, um mês do plano</div>
+      <div class="check">
+        <div><i class="x"></i>Quanto você precisa mesmo</div>
+        <div><i class="x"></i>Onde guardar com liquidez</div>
+        <div><i class="x"></i>Os primeiros R$50 por mês</div>
+        <div><i></i>Desafio das 52 semanas</div>
+        <div><i></i>Repondo depois de usar</div>
+      </div>
+    </div>
+  </div>
+  <div class="selo"><b>18</b><small>MESES</small></div>
+  <div class="pills">
+    <span class="pill">TEMPLATES</span><span class="pill">CHECKLISTS</span><span class="pill">8 CAPÍTULOS</span>
+  </div>
+</section>
+
+<!-- BUMP 1 -->
+<section class="capa" id="calc">
+  <div class="txt">
+    <div class="kicker">Ferramenta</div>
+    <h1 class="serif">Calculadora do <em>Seu Número</em></h1>
+    <div class="rule"></div>
+    <p class="promessa" style="margin-top:28px">Descubra quanto é a sua reserva e quanto guardar por mês pra chegar lá.</p>
+  </div>
+  <div class="dev">
+    <div class="tela">
+      <div class="lab">SUAS DESPESAS</div>
+      <div class="campo"><span>Moradia</span><span></span></div>
+      <div class="campo"><span>Alimentação</span><span></span></div>
+      <div class="campo"><span>Transporte</span><span></span></div>
+      <div class="campo"><span>Contas fixas</span><span></span></div>
+      <div class="res">
+        <div class="l">SEU NÚMERO</div>
+        <div class="v">6 meses</div>
+        <div class="s">de despesa guardados</div>
+      </div>
+      <div class="campo mes"><span>Guardar por mês</span><span class="ouro"></span></div>
+      <div class="bar"><i></i></div>
+      <div class="barl"><span>Mês 1</span><span>Mês 18</span></div>
+    </div>
+  </div>
+  <div class="pills">
+    <span class="pill">PREENCHA</span><span class="pill o">VEJA NA HORA</span>
+  </div>
+</section>
+
+<!-- BUMP 2 -->
+<section class="capa" id="semanas">
+  <div class="txt">
+    <div class="kicker">Desafio guiado</div>
+    <h1 class="serif">52 Semanas de <em>Depósito Crescente</em></h1>
+    <div class="rule"></div>
+    <p class="promessa" style="margin-top:26px">Um depósito por semana, começando pequeno. Sua reserva sai do zero.</p>
+  </div>
+  <div class="grid" id="g"></div>
+  <div class="pills"><span class="pill">TABELA PRONTA</span><span class="pill">CHECKLIST SEMANAL</span></div>
+</section>
+
+<script>
+  const g=document.getElementById('g');
+  for(let i=1;i<=52;i++){
+    const d=document.createElement('div');const b=document.createElement('b');
+    const s=22+Math.round((i-1)/51*34);b.style.width=s+'px';b.style.height=s+'px';
+    if(i<=17)b.className='on';d.appendChild(b);g.appendChild(d);
+  }
+</script>
+</body>
+</html>
