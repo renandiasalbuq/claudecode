@@ -17,13 +17,22 @@ Situação em 28/09/2026: os 3 produtos e os 2 order bumps estão criados na Cak
 - [ ] Cadastre a conta bancária ou a chave Pix para saque.
 - [ ] Veja se aparece algum aviso de "conta em análise" ou "configuração pendente". Resolva antes de divulgar.
 
-## Passo 2: o conteúdo precisa existir (bloqueante)
-Hoje **nenhum dos 3 produtos tem conteúdo** e o campo de entrega está vazio. Sem isso, o cliente paga e não recebe nada.
-- [ ] Escrever o guia principal (8 capítulos), a Calculadora e a tabela das 52 semanas.
-- [ ] Decidir **como entregar**. Opções:
-  - **A) Área de membros da Cakto**: sobe o PDF lá. É mais simples.
-  - **B) Link externo**: o mini app fica hospedado fora e a Cakto envia o link por e-mail depois da compra.
-- [ ] Configurar a entrega **nos 3 produtos**. Os bumps também precisam entregar.
+## Passo 2: subir o conteúdo na área de membros da Cakto (bloqueante)
+O conteúdo está pronto em `cakto/produtos/entregaveis/`. Sem subir, o cliente paga e não recebe nada.
+
+| Produto na Cakto | Arquivo(s) para subir |
+|---|---|
+| **Reserva de Emergência do Zero** (principal) | `01-Reserva-de-Emergencia-do-Zero-Guia.pdf` (31 páginas) |
+| **Calculadora do Seu Número** (bump 1) | `02-Calculadora-do-Seu-Numero.xlsx` + `02-Calculadora-do-Seu-Numero-Como-Usar.pdf` |
+| **52 Semanas de Depósito Crescente** (bump 2) | `03-52-Semanas-de-Deposito-Crescente.pdf` |
+
+Para **cada um dos 3 produtos** (cada bump é um produto próprio e precisa da própria entrega):
+- [ ] Abra o produto → procure a seção de entrega de conteúdo ou área de membros → escolha **Área de membros da Cakto**.
+- [ ] Crie o curso/área com o nome do produto e um módulo único (ex.: "Material").
+- [ ] Crie uma aula/conteúdo por arquivo, com um título claro ("Guia completo em PDF", "Planilha da Calculadora", "Como usar a Calculadora"), e anexe o arquivo.
+- [ ] Salve e confira que o produto mostra a área de membros como forma de entrega.
+
+> ⚠️ Não confirmei na documentação da Cakto se a área de membros aceita anexar `.xlsx`. Se não aceitar: (1) suba o arquivo no Google Drive, (2) compartilhe como "qualquer pessoa com o link pode ver", (3) coloque o link na descrição da aula, junto com o PDF "Como usar". Também vale confirmar com o suporte da Cakto (infoprodutores@cakto.com.br) se quem compra o bump junto com o principal recebe o acesso aos dois automaticamente.
 
 ## Passo 3: imagens de capa (prontas, falta subir)
 O tamanho recomendado pela Cakto é **300×250 px**. Os arquivos estão em `cakto/imagens/300x250/`, em duas versões com a mesma proporção:
@@ -65,6 +74,6 @@ Os produtos nasceram com Pix, cartão, 3DS, PicPay, Google Pay e Apple Pay ativo
 - [ ] Termos e política de privacidade, se você for ter página de vendas ou captar e-mails.
 
 ## Passo 9: teste antes de divulgar
-- [ ] Abra o checkout do principal (`pay.cakto.com.br/fi9x9rz`, ou o link que o painel mostrar).
+- [ ] Abra o checkout do principal: `https://pay.cakto.com.br/fi9x9rz` (formato confirmado na documentação oficial da Cakto).
 - [ ] Confira: as capas aparecem, a Calculadora está em 1º e o 52 Semanas em 2º, os preços riscados de R$ 29,90 e R$ 34,90 aparecem, e Pix e cartão estão disponíveis.
 - [ ] Faça **uma compra real via Pix** com os 2 bumps e confirme que o e-mail de acesso chega com o conteúdo dos 3 produtos. Depois reembolse pelo painel.

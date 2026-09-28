@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Calculadora do Seu Número</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .capa{background:linear-gradient(160deg,var(--creme) 0%,var(--creme2) 100%);color:var(--tinta)}
+  .capa .k{color:var(--ouro-escuro)}
+  .capa h1{color:var(--verde)}
+  .capa h1 em{color:var(--ouro-escuro)}
+  .capa .p{color:#3E4A44}
+  .capa .p b{color:var(--verde)}
+  .capa .rod{color:var(--ouro-escuro)}
+  .aba{display:inline-block;background:var(--verde);color:var(--creme);font-size:8.6pt;font-weight:600;padding:1pt 7pt;border-radius:3pt;white-space:nowrap}
+  .amarelo{display:inline-block;background:#FFF6DB;border:1.2pt solid var(--ouro);font-size:8.6pt;font-weight:600;padding:0 6pt;border-radius:3pt;color:var(--verde)}
+  .passo{display:flex;gap:12pt;margin:12pt 0;break-inside:avoid}
+  .passo .n{flex:none;width:28pt;height:28pt;border-radius:50%;background:var(--ouro);color:var(--verde);font-family:"Playfair Display",serif;font-size:14pt;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .passo h3{margin:3pt 0 4pt}
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <div class="k">Ferramenta</div>
+  <h1 class="serif">Calculadora do <em style="white-space:nowrap">Seu Número</em></h1>
+  <div class="r" style="top:118mm"></div>
+  <p class="p" style="top:126mm">Descubra <b>quanto é a sua reserva</b> e <b>quanto guardar por mês</b> para chegar lá.</p>
+  <p class="p" style="top:150mm;width:166mm;font-size:11pt;color:#6B6558">Guia de uso da planilha · Excel, Google Planilhas e LibreOffice</p>
+  <div class="rod"><span>Complemento do guia Reserva de Emergência do Zero</span><span>Edição 2026</span></div>
+</section>
+
+<h2 style="margin-top:0">O que a Calculadora faz</h2>
+<p class="lead">Você preenche as suas despesas essenciais uma vez, e a planilha calcula na hora o valor da sua reserva, quanto guardar por mês, por semana e por dia, e acompanha o seu progresso até o fim.</p>
+
+<p>Ela vem junto com este PDF, no arquivo <strong>02-Calculadora-do-Seu-Numero.xlsx</strong>. São cinco abas:</p>
+<table>
+  <tr><th style="width:34%">Aba</th><th>Para que serve</th></tr>
+  <tr><td><span class="aba">Comece aqui</span></td><td>Instruções rápidas, sempre à mão.</td></tr>
+  <tr><td><span class="aba">1 · Despesas</span></td><td>Você preenche o custo mensal de cada despesa essencial. A planilha soma o seu <strong>custo essencial mensal</strong>.</td></tr>
+  <tr><td><span class="aba">2 · Seu Número</span></td><td>Mostra a meta da reserva, quanto falta, quanto guardar por mês, semana e dia, e os seus 4 degraus.</td></tr>
+  <tr><td><span class="aba">3 · Acompanhamento</span></td><td>Todo mês você anota quanto depositou. A planilha mostra o total guardado, quanto falta e se você está no ritmo.</td></tr>
+  <tr><td><span class="aba">4 · Simulador de prazo</span></td><td>Compara quanto guardar por mês em prazos de 6 a 36 meses.</td></tr>
+</table>
+
+<div class="box ideia">
+  <div class="t">A regra de ouro</div>
+  <p>Só preencha as <span class="amarelo">células amarelas</span>. Todas as outras têm fórmulas e estão protegidas, para você não apagar nada sem querer.</p>
+</div>
+
+<h2>Como abrir</h2>
+<h3>No computador</h3>
+<ul>
+  <li><strong>Excel:</strong> baixe o arquivo e abra com dois cliques.</li>
+  <li><strong>Google Planilhas (grátis):</strong> acesse o Google Planilhas com a sua conta Google, clique em <em>Arquivo → Importar → Fazer upload</em> e escolha o arquivo.</li>
+  <li><strong>LibreOffice (grátis):</strong> abra o arquivo pelo LibreOffice Calc.</li>
+</ul>
+<h3>No celular</h3>
+<p>Instale o app do <strong>Google Planilhas</strong> ou do <strong>Microsoft Excel</strong>, baixe o arquivo e abra por ele. Para preencher com mais conforto, gire o celular na horizontal.</p>
+
+<div class="box alerta">
+  <div class="t">Guarde uma cópia em branco</div>
+  <p style="margin:0">Antes de preencher, salve uma cópia do arquivo original. Se um dia quiser recomeçar do zero, é só usar a cópia.</p>
+</div>
+
+<h2>Passo a passo</h2>
+
+<div class="passo"><div class="n">1</div><div>
+  <h3>Preencha as suas despesas</h3>
+  <p>Abra a aba <span class="aba">1 · Despesas</span>. Em cada linha, digite na célula amarela quanto você paga <strong>por mês</strong>. Conta anual? Divida por 12. Use os extratos e faturas dos últimos 3 meses para não chutar.</p>
+  <p>Coloque só o <strong>essencial</strong>: o que você não pode deixar de pagar nem por um mês. Delivery, streaming, roupas e saídas ficam de fora. Tem uma despesa essencial que não está na lista? Use as linhas "Outro essencial": dá para escrever o nome também.</p>
+</div></div>
+
+<div class="passo"><div class="n">2</div><div>
+  <h3>Confira os seus dados</h3>
+  <p>Abra a aba <span class="aba">2 · Seu Número</span>. O custo essencial já aparece sozinho. Nas células amarelas, confira:</p>
+  <ul>
+    <li><strong>Quantos meses de reserva:</strong> vem com 6. Se a sua renda é instável, você pode aumentar.</li>
+    <li><strong>Em quantos meses quer chegar lá:</strong> vem com 18.</li>
+    <li><strong>Quanto você já tem guardado:</strong> se é zero, deixe zero.</li>
+  </ul>
+</div></div>
+
+<div class="passo"><div class="n">3</div><div>
+  <h3>Leia o seu resultado</h3>
+  <p>Na mesma aba aparecem, na hora:</p>
+  <ul>
+    <li><strong>Seu número:</strong> o valor total da sua reserva.</li>
+    <li><strong>Guardar por mês</strong>, por semana e por dia.</li>
+    <li><strong>Seus 4 degraus:</strong> as metas menores do caminho.</li>
+  </ul>
+  <p>O valor mensal ficou alto demais? <strong>Aumente o prazo</strong> na célula amarela e veja o novo valor, ou abra a aba <span class="aba">4 · Simulador de prazo</span> para comparar vários prazos lado a lado. O prazo que você escolheu aparece destacado.</p>
+</div></div>
+
+<div class="passo"><div class="n">4</div><div>
+  <h3>Acompanhe todo mês</h3>
+  <p>Na aba <span class="aba">3 · Acompanhamento</span>, anote todo mês quanto você depositou na coluna amarela. Se precisou sacar, anote com sinal de menos (por exemplo, <strong>-300</strong>). A planilha mostra:</p>
+  <ul>
+    <li><strong>Total guardado</strong> até aquele mês.</li>
+    <li><strong>Meta até aqui:</strong> quanto você deveria ter se seguisse o plano à risca.</li>
+    <li><strong>Diferença</strong> e <strong>quanto falta</strong> para a meta final.</li>
+    <li><strong>Situação:</strong> <em>No ritmo</em>, <em>Abaixo da meta</em> ou <em>Reserva completa!</em></li>
+  </ul>
+</div></div>
+
+<div class="passo"><div class="n">5</div><div>
+  <h3>Recalcule quando a vida mudar</h3>
+  <p>Mudou de casa, de emprego, teve filho, a conta de luz subiu? Atualize as despesas na aba 1. O seu número e o valor mensal se ajustam sozinhos. Uma boa prática é revisar a cada 6 meses.</p>
+</div></div>
+
+<div class="box exemplo">
+  <div class="t">Exemplo ilustrativo</div>
+  <p>Carla preencheu: moradia R$ 700, contas de casa R$ 200, internet e celular R$ 100, alimentação R$ 300 e transporte R$ 100. Custo essencial: <strong>R$ 1.400</strong>.</p>
+  <p style="margin:0">Com 6 meses de reserva e 18 meses de prazo, a Calculadora mostrou: seu número <strong>R$ 8.400</strong>, guardar <strong>R$ 466,67 por mês</strong> (cerca de R$ 107,69 por semana). No Simulador, ela viu que em 24 meses o valor cairia para <strong>R$ 350 por mês</strong>.</p>
+</div>
+
+<h2>Perguntas frequentes</h2>
+<h3>Apareceu um aviso quando tentei digitar numa célula.</h3>
+<p>Aquela célula tem fórmula e está protegida. Procure a célula amarela correspondente.</p>
+<h3>Preciso mudar uma fórmula. Como desbloqueio?</h3>
+<p>A proteção não tem senha. No Excel: <em>Revisão → Desproteger Planilha</em>. No Google Planilhas, a proteção pode não ser mantida na importação. Cuidado: alterar fórmulas pode quebrar os cálculos, então faça isso numa cópia.</p>
+<h3>A Calculadora considera o rendimento?</h3>
+<p>Não. Os valores são sem rendimento, de propósito, para você não contar com um dinheiro que ainda não existe. Na prática, se a reserva estiver aplicada, você chega um pouco antes.</p>
+<h3>Posso usar para outra meta, como uma viagem?</h3>
+<p>Pode. Coloque o valor da meta como despesa na aba 1 e ajuste "meses de reserva" para 1.</p>
+
+<p class="small" style="margin-top:20pt;text-align:center">Calculadora do Seu Número · Conteúdo educativo, sem recomendação individual de investimento.</p>
+</body>
+</html>
