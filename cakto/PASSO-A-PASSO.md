@@ -39,6 +39,7 @@ Todas estão em `cakto/imagens/painel/`, no **tamanho exato** pedido pelo painel
 
 | Onde no painel | Tamanho | Principal | Calculadora (bump 1) | 52 Semanas (bump 2) |
 |---|---|---|---|---|
+| Imagem do produto | 300×250 | `01-principal-produto-300x250.png` | `02-calculadora-produto-300x250.png` | `03-52semanas-produto-300x250.png` |
 | Informações do produto | 300×500 | `01-principal-info-300x500.png` | `02-calculadora-info-300x500.png` | `03-52semanas-info-300x500.png` |
 | Capa do módulo (área de membros) | 400×600 | `01-principal-modulo-400x600.png` | `02-calculadora-modulo-400x600.png` | `03-52semanas-modulo-400x600.png` |
 | Banner do produto | 1920×480 | `01-principal-banner-1920x480.png` | `02-calculadora-banner-1920x480.png` | `03-52semanas-banner-1920x480.png` |
