@@ -26,15 +26,21 @@ Hoje **nenhum dos 3 produtos tem conteúdo** e o campo de entrega está vazio. S
 - [ ] Configurar a entrega **nos 3 produtos**. Os bumps também precisam entregar.
 
 ## Passo 3: imagens de capa (prontas, falta subir)
-Arquivos em `cakto/imagens/`, 1080×1080 px, PNG:
-- `01-principal-reserva-de-emergencia.png` vai no **produto principal**.
-- `02-bump-calculadora-do-seu-numero.png` vai no **bump 1**.
-- `03-bump-52-semanas.png` vai no **bump 2**.
+O tamanho recomendado pela Cakto é **300×250 px**. Os arquivos estão em `cakto/imagens/300x250/`, em duas versões com a mesma proporção:
+- `-300x250.png`: o tamanho exato recomendado.
+- `-600x500@2x.png`: o dobro da resolução, mais nítido em tela de celular e retina. **Teste esta primeiro.** Se o painel recusar ou cortar, use a de 300×250.
+
+| Arquivo | Vai em |
+|---|---|
+| `01-principal-reserva-de-emergencia-*.png` | produto principal |
+| `02-bump-calculadora-do-seu-numero-*.png` | bump 1 |
+| `03-bump-52-semanas-*.png` | bump 2 |
 
 Para cada produto:
 - [ ] Produtos → abrir o produto → editar → imagem → subir o arquivo → salvar.
-- [ ] Confira no painel o tamanho e o formato recomendados. Se o painel pedir outra proporção (retangular, por exemplo), me diga as medidas e eu gero uma nova versão.
 - [ ] (Opcional) No produto principal → Order bumps → ativar "Exibir imagem" nos 2 bumps.
+
+As versões quadradas de 1080×1080 em `cakto/imagens/` servem para redes sociais e anúncios.
 
 ## Passo 4: pagamento
 Os produtos nasceram com Pix, cartão, 3DS, PicPay, Google Pay e Apple Pay ativos.
