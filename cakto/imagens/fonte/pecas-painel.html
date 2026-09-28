@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Fontes: cópia local em ../../produtos/src/fonts -->
+<link rel="stylesheet" href="../../produtos/src/fonts/local.css">
+<style>
+  :root{--verde:#0E2B25;--verde3:#1E4A3D;--ouro:#C9A45C;--ouro2:#E3C98F;--ouro-esc:#8A6A2E;--creme:#F3EDE2;--creme2:#E8DFCF;--tinta:#10231E}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#333;font-family:Inter,sans-serif;display:flex;flex-wrap:wrap;gap:30px;padding:30px;align-items:flex-start}
+  .pc{position:relative;overflow:hidden;flex:none}
+  .serif{font-family:"Playfair Display",serif}
+  .k{letter-spacing:.28em;text-transform:uppercase;font-weight:700}
+  .rule{height:2px;background:var(--ouro)}
+  .tag{display:inline-block;font-weight:700;letter-spacing:.14em;border-radius:99px;white-space:nowrap}
+
+  /* temas */
+  .escuro{background:radial-gradient(120% 90% at 85% 0%,#24584A 0%,var(--verde) 55%,#0A201B 100%);color:var(--creme)}
+  .escuro .k,.escuro h1 em{color:var(--ouro2)}
+  .escuro h1{color:#FBF7EF}
+  .escuro .sub{color:#D9D2C4}
+  .escuro .sub b{color:#FBF7EF}
+  .escuro .tag{border:1.5px solid rgba(227,201,143,.55);color:var(--ouro2)}
+  .claro{background:linear-gradient(160deg,var(--creme),var(--creme2));color:var(--tinta)}
+  .claro .k,.claro h1 em{color:var(--ouro-esc)}
+  .claro h1{color:var(--verde)}
+  .claro .sub{color:#3E4A44}
+  .claro .sub b{color:var(--verde)}
+  .claro .tag{background:var(--verde);color:var(--creme)}
+  h1{font-family:"Playfair Display",serif;font-weight:700;line-height:1.03}
+  h1 em{font-weight:600}
+
+  /* ---- visual: documento (principal) ---- */
+  .doc{position:absolute;border-radius:6px 14px 14px 6px;background:linear-gradient(135deg,#F7F1E6,#E4D8C2);transform:rotate(-6deg);box-shadow:-18px 26px 50px rgba(0,0,0,.5)}
+  .doc .in{position:absolute;color:var(--tinta)}
+  .doc .t{letter-spacing:.2em;font-weight:700;color:var(--ouro-esc)}
+  .doc .h{font-family:"Playfair Display",serif;font-weight:700;line-height:1.1}
+  .doc .g{display:grid;grid-template-columns:repeat(6,1fr)}
+  .doc .g span{background:#D9CDB6}
+  .doc .g .on{background:var(--verde3)} .doc .g .m{background:var(--ouro)}
+  .doc .ck div{white-space:nowrap}
+  .doc .ck i{display:inline-block;border:1.5px solid var(--verde3);vertical-align:-2px}
+  .doc .ck i.x{background:var(--verde3)}
+
+  /* ---- visual: celular (calculadora) ---- */
+  .dev{position:absolute;background:#0C1F1A}
+  .tela{width:100%;height:100%;background:linear-gradient(180deg,#123429,#0E2B25);color:var(--creme)}
+  .tela .lab{letter-spacing:.18em;color:var(--ouro2);font-weight:700}
+  .campo{background:rgba(243,237,226,.07);border:1px solid rgba(243,237,226,.16);display:flex;justify-content:space-between;align-items:center;color:#CFC8BA}
+  .campo i{background:rgba(243,237,226,.28)}
+  .campo.m{border-color:rgba(201,164,92,.6)} .campo.m i{background:var(--ouro)}
+  .res{background:var(--ouro);color:var(--verde)}
+  .res .l{letter-spacing:.18em;font-weight:700}
+  .res .v{font-family:"Playfair Display",serif;font-weight:700}
+  .res .s{font-weight:600}
+  .bar{background:rgba(243,237,226,.13);overflow:hidden}
+  .bar i{display:block;height:100%;width:38%;background:linear-gradient(90deg,var(--ouro),var(--ouro2))}
+
+  /* ---- visual: 52 bolinhas ---- */
+  .dots{position:absolute;display:grid;grid-template-columns:repeat(13,1fr);align-items:end}
+  .dots div{display:flex;justify-content:center;align-items:flex-end}
+  .dots b{display:block;border-radius:50%;background:rgba(243,237,226,.14);border:1px solid rgba(243,237,226,.2)}
+  .dots b.on{background:var(--ouro);border-color:var(--ouro2);box-shadow:0 0 8px rgba(201,164,92,.4)}
+</style>
+</head>
+<body>
+
+<!-- ============ 300 x 500 · INFORMAÇÕES DO PRODUTO ============ -->
+<section class="pc escuro" id="info-principal" style="width:300px;height:500px">
+  <div style="position:absolute;left:24px;top:28px;right:24px">
+    <div class="k" style="font-size:9px">Guia Premium</div>
+    <h1 style="font-size:31px;margin-top:10px">Reserva de Emergência <em style="white-space:nowrap">do Zero</em></h1>
+    <div class="rule" style="width:40px;margin:12px 0 10px"></div>
+    <p class="sub" style="font-size:12.5px;line-height:1.4">Junte <b>6 meses de despesa</b> em <b>18 meses</b>, mesmo ganhando pouco.</p>
+  </div>
+  <div class="doc" style="left:64px;top:236px;width:170px;height:190px">
+    <div class="in" style="inset:16px 14px 12px 18px">
+      <div class="t" style="font-size:6.5px">PLANO DE 18 MESES</div>
+      <div class="h" style="font-size:14px;margin:6px 0 9px">Sua reserva,<br>mês a mês</div>
+      <div class="g" style="gap:4px"><span class="on" style="height:11px;border-radius:2px"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="m"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="ck" style="margin-top:10px;font-size:8px;line-height:2">
+        <div><i class="x" style="width:8px;height:8px;border-radius:2px;margin-right:5px"></i>Quanto você precisa</div>
+        <div><i class="x" style="width:8px;height:8px;border-radius:2px;margin-right:5px"></i>Onde guardar</div>
+        <div><i style="width:8px;height:8px;border-radius:2px;margin-right:5px"></i>Desafio 52 semanas</div>
+      </div>
+    </div>
+  </div>
+  <span class="tag" style="position:absolute;left:24px;bottom:18px;font-size:8.5px;padding:6px 11px">8 CAPÍTULOS · TEMPLATES · CHECKLISTS</span>
+</section>
+
+<section class="pc claro" id="info-calculadora" style="width:300px;height:500px">
+  <div style="position:absolute;left:24px;top:28px;right:24px">
+    <div class="k" style="font-size:9px">Ferramenta</div>
+    <h1 style="font-size:31px;margin-top:10px">Calculadora do <em style="white-space:nowrap">Seu Número</em></h1>
+    <div class="rule" style="width:40px;margin:12px 0 10px"></div>
+    <p class="sub" style="font-size:12.5px;line-height:1.4">Descubra quanto é a sua reserva e quanto guardar por mês.</p>
+  </div>
+  <div class="dev" style="left:78px;top:222px;width:144px;height:218px;border-radius:22px;padding:7px;box-shadow:0 16px 34px rgba(14,43,37,.3)">
+    <div class="tela" style="border-radius:16px;padding:14px 11px">
+      <div class="lab" style="font-size:6.5px">SUAS DESPESAS</div>
+      <div class="campo" style="margin-top:5px;border-radius:5px;padding:5px 7px;font-size:7.5px"><span>Moradia</span><i style="width:30px;height:4px;border-radius:2px"></i></div>
+      <div class="campo" style="margin-top:4px;border-radius:5px;padding:5px 7px;font-size:7.5px"><span>Alimentação</span><i style="width:30px;height:4px;border-radius:2px"></i></div>
+      <div class="campo" style="margin-top:4px;border-radius:5px;padding:5px 7px;font-size:7.5px"><span>Transporte</span><i style="width:30px;height:4px;border-radius:2px"></i></div>
+      <div class="res" style="margin-top:10px;border-radius:8px;padding:9px 9px"><div class="l" style="font-size:6px">SEU NÚMERO</div><div class="v" style="font-size:19px;margin-top:2px">6 meses</div><div class="s" style="font-size:7px">de despesa guardados</div></div>
+      <div class="campo m" style="margin-top:8px;border-radius:5px;padding:5px 7px;font-size:7.5px"><span>Por mês</span><i style="width:30px;height:4px;border-radius:2px"></i></div>
+    </div>
+  </div>
+  <span class="tag" style="position:absolute;left:24px;bottom:18px;font-size:8.5px;padding:6px 11px;box-shadow:0 4px 12px rgba(0,0,0,.25)">PREENCHA E VEJA NA HORA</span>
+</section>
+
+<section class="pc escuro" id="info-52semanas" style="width:300px;height:500px">
+  <div style="position:absolute;left:24px;top:28px;right:24px">
+    <div class="k" style="font-size:9px">Desafio guiado</div>
+    <h1 style="font-size:31px;margin-top:10px">52 Semanas de <em>Depósito Crescente</em></h1>
+    <div class="rule" style="width:40px;margin:12px 0 10px"></div>
+    <p class="sub" style="font-size:12.5px;line-height:1.4">Um depósito por semana, começando pequeno. <b>Sua reserva sai do zero.</b></p>
+  </div>
+  <div class="dots d52" data-min="6" data-max="15" style="left:24px;right:24px;top:300px;gap:7px 4px" data-h="18"></div>
+  <span class="tag" style="position:absolute;left:24px;bottom:18px;font-size:8.5px;padding:6px 11px">TABELA PRONTA · CHECKLIST SEMANAL</span>
+</section>
+
+<!-- ============ 400 x 600 · CAPA DO MÓDULO ============ -->
+<section class="pc escuro" id="modulo-principal" style="width:400px;height:600px">
+  <div style="position:absolute;left:32px;top:36px;right:32px">
+    <div class="k" style="font-size:10px">Guia Premium</div>
+    <h1 style="font-size:42px;margin-top:12px">Reserva de Emergência <em style="white-space:nowrap">do Zero</em></h1>
+    <div class="rule" style="width:48px;margin:16px 0 12px"></div>
+    <p class="sub" style="font-size:15px;line-height:1.4">Junte <b>6 meses de despesa</b> em <b>18 meses</b>, mesmo ganhando pouco.</p>
+  </div>
+  <div class="doc" style="left:92px;top:318px;width:216px;height:240px">
+    <div class="in" style="inset:20px 18px 14px 22px">
+      <div class="t" style="font-size:8px">PLANO DE 18 MESES</div>
+      <div class="h" style="font-size:18px;margin:7px 0 11px">Sua reserva,<br>mês a mês</div>
+      <div class="g" style="gap:5px"><span class="on" style="height:14px;border-radius:3px"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="m"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="ck" style="margin-top:12px;font-size:10px;line-height:2">
+        <div><i class="x" style="width:10px;height:10px;border-radius:2px;margin-right:6px"></i>Quanto você precisa</div>
+        <div><i class="x" style="width:10px;height:10px;border-radius:2px;margin-right:6px"></i>Onde guardar</div>
+        <div><i style="width:10px;height:10px;border-radius:2px;margin-right:6px"></i>Desafio 52 semanas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pc claro" id="modulo-calculadora" style="width:400px;height:600px">
+  <div style="position:absolute;left:32px;top:36px;right:32px">
+    <div class="k" style="font-size:10px">Ferramenta</div>
+    <h1 style="font-size:42px;margin-top:12px">Calculadora do <em style="white-space:nowrap">Seu Número</em></h1>
+    <div class="rule" style="width:48px;margin:16px 0 12px"></div>
+    <p class="sub" style="font-size:15px;line-height:1.4">Quanto é a sua reserva e quanto guardar por mês pra chegar lá.</p>
+  </div>
+  <div class="dev" style="left:105px;top:302px;width:190px;height:298px;border-radius:28px 28px 0 0;padding:9px 9px 0;box-shadow:0 20px 50px rgba(14,43,37,.35)">
+    <div class="tela" style="border-radius:20px 20px 0 0;padding:20px 14px">
+      <div class="lab" style="font-size:8px">SUAS DESPESAS</div>
+      <div class="campo" style="margin-top:6px;border-radius:6px;padding:7px 9px;font-size:9.5px"><span>Moradia</span><i style="width:40px;height:5px;border-radius:3px"></i></div>
+      <div class="campo" style="margin-top:5px;border-radius:6px;padding:7px 9px;font-size:9.5px"><span>Alimentação</span><i style="width:40px;height:5px;border-radius:3px"></i></div>
+      <div class="campo" style="margin-top:5px;border-radius:6px;padding:7px 9px;font-size:9.5px"><span>Transporte</span><i style="width:40px;height:5px;border-radius:3px"></i></div>
+      <div class="res" style="margin-top:13px;border-radius:10px;padding:12px 12px"><div class="l" style="font-size:7.5px">SEU NÚMERO</div><div class="v" style="font-size:25px;margin-top:3px">6 meses</div><div class="s" style="font-size:9px">de despesa guardados</div></div>
+      <div class="campo m" style="margin-top:10px;border-radius:6px;padding:7px 9px;font-size:9.5px"><span>Por mês</span><i style="width:40px;height:5px;border-radius:3px"></i></div>
+    </div>
+  </div>
+</section>
+
+<section class="pc escuro" id="modulo-52semanas" style="width:400px;height:600px">
+  <div style="position:absolute;left:32px;top:36px;right:32px">
+    <div class="k" style="font-size:10px">Desafio guiado</div>
+    <h1 style="font-size:42px;margin-top:12px">52 Semanas de <em>Depósito Crescente</em></h1>
+    <div class="rule" style="width:48px;margin:16px 0 12px"></div>
+    <p class="sub" style="font-size:15px;line-height:1.4">Um depósito por semana, começando pequeno.</p>
+  </div>
+  <div class="dots d52" data-min="8" data-max="20" data-h="24" style="left:32px;right:32px;top:380px;gap:10px 6px"></div>
+</section>
+
+<!-- ============ 1920 x 480 · BANNER ============ -->
+<section class="pc escuro" id="banner-principal" style="width:1920px;height:480px">
+  <div style="position:absolute;left:260px;top:0;bottom:0;width:820px;display:flex;flex-direction:column;justify-content:center">
+    <div class="k" style="font-size:15px">Guia Premium</div>
+    <h1 style="font-size:74px;margin-top:16px">Reserva de Emergência <em style="white-space:nowrap">do Zero</em></h1>
+    <div class="rule" style="width:70px;margin:24px 0 18px"></div>
+    <p class="sub" style="font-size:25px;line-height:1.4">Junte <b>6 meses de despesa</b> em <b>18 meses</b>, mesmo ganhando pouco.</p>
+  </div>
+  <div class="doc" style="left:1220px;top:58px;width:300px;height:390px">
+    <div class="in" style="inset:30px 26px 20px 32px">
+      <div class="t" style="font-size:11px">PLANO DE 18 MESES</div>
+      <div class="h" style="font-size:26px;margin:10px 0 16px">Sua reserva,<br>mês a mês</div>
+      <div class="g" style="gap:7px"><span class="on" style="height:20px;border-radius:4px"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="m"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="ck" style="margin-top:18px;font-size:14px;line-height:2.05">
+        <div><i class="x" style="width:14px;height:14px;border-radius:3px;margin-right:9px"></i>Quanto você precisa</div>
+        <div><i class="x" style="width:14px;height:14px;border-radius:3px;margin-right:9px"></i>Onde guardar</div>
+        <div><i class="x" style="width:14px;height:14px;border-radius:3px;margin-right:9px"></i>Os primeiros R$50</div>
+        <div><i style="width:14px;height:14px;border-radius:3px;margin-right:9px"></i>Desafio 52 semanas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pc claro" id="banner-calculadora" style="width:1920px;height:480px">
+  <div style="position:absolute;left:260px;top:0;bottom:0;width:820px;display:flex;flex-direction:column;justify-content:center">
+    <div class="k" style="font-size:15px">Ferramenta</div>
+    <h1 style="font-size:74px;margin-top:16px">Calculadora do <em style="white-space:nowrap">Seu Número</em></h1>
+    <div class="rule" style="width:70px;margin:24px 0 18px"></div>
+    <p class="sub" style="font-size:25px;line-height:1.4">Descubra quanto é a sua reserva e <b>quanto guardar por mês</b> pra chegar lá.</p>
+  </div>
+  <div class="dev" style="left:1260px;top:44px;width:250px;height:436px;border-radius:36px 36px 0 0;padding:12px 12px 0;box-shadow:0 24px 60px rgba(14,43,37,.35)">
+    <div class="tela" style="border-radius:26px 26px 0 0;padding:28px 18px">
+      <div class="lab" style="font-size:10px">SUAS DESPESAS</div>
+      <div class="campo" style="margin-top:8px;border-radius:8px;padding:9px 12px;font-size:12.5px"><span>Moradia</span><i style="width:52px;height:6px;border-radius:3px"></i></div>
+      <div class="campo" style="margin-top:7px;border-radius:8px;padding:9px 12px;font-size:12.5px"><span>Alimentação</span><i style="width:52px;height:6px;border-radius:3px"></i></div>
+      <div class="campo" style="margin-top:7px;border-radius:8px;padding:9px 12px;font-size:12.5px"><span>Transporte</span><i style="width:52px;height:6px;border-radius:3px"></i></div>
+      <div class="campo" style="margin-top:7px;border-radius:8px;padding:9px 12px;font-size:12.5px"><span>Contas fixas</span><i style="width:52px;height:6px;border-radius:3px"></i></div>
+      <div class="res" style="margin-top:16px;border-radius:13px;padding:15px 15px"><div class="l" style="font-size:9.5px">SEU NÚMERO</div><div class="v" style="font-size:32px;margin-top:4px">6 meses</div><div class="s" style="font-size:11px">de despesa guardados</div></div>
+      <div class="campo m" style="margin-top:12px;border-radius:8px;padding:9px 12px;font-size:12.5px"><span>Por mês</span><i style="width:52px;height:6px;border-radius:3px"></i></div>
+    </div>
+  </div>
+</section>
+
+<section class="pc escuro" id="banner-52semanas" style="width:1920px;height:480px">
+  <div style="position:absolute;left:260px;top:0;bottom:0;width:760px;display:flex;flex-direction:column;justify-content:center">
+    <div class="k" style="font-size:15px">Desafio guiado</div>
+    <h1 style="font-size:70px;margin-top:16px">52 Semanas de <em>Depósito Crescente</em></h1>
+    <div class="rule" style="width:70px;margin:24px 0 18px"></div>
+    <p class="sub" style="font-size:25px;line-height:1.4">Um depósito por semana, começando pequeno. <b>Sua reserva sai do zero.</b></p>
+  </div>
+  <div class="dots d52" data-min="12" data-max="30" data-h="36" style="left:1100px;width:560px;top:140px;gap:14px 8px"></div>
+</section>
+
+<script>
+  document.querySelectorAll('.d52').forEach(g=>{
+    const mn=+g.dataset.min,mx=+g.dataset.max,h=+g.dataset.h;
+    for(let i=1;i<=52;i++){const d=document.createElement('div'),b=document.createElement('b');
+      const s=mn+Math.round((i-1)/51*(mx-mn));d.style.height=h+'px';b.style.width=s+'px';b.style.height=s+'px';
+      if(i<=17)b.className='on';d.appendChild(b);g.appendChild(d);}
+  });
+  // grade do documento: altura das células igual à primeira
+  document.querySelectorAll('.doc .g').forEach(g=>{const h=g.firstElementChild.style.height,r=g.firstElementChild.style.borderRadius;
+    [...g.children].forEach(s=>{s.style.height=h;s.style.borderRadius=r;});});
+</script>
+</body>
+</html>
