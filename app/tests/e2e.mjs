@@ -48,6 +48,44 @@ async function postWebhook(corpoObj, { token = TOKEN, assinar = true } = {}) {
   return { status: r.status, json: await r.json().catch(() => null) }
 }
 
+
+// A rede deste ambiente de teste passa por um proxy que às vezes derruba a conexão: tenta de novo.
+async function ir(pagina, url) {
+  for (let t = 1; ; t++) {
+    try { return await pagina.goto(url) } catch (e) {
+      if (t >= 4 || !/ERR_(TOO_MANY_RETRIES|CONNECTION|NETWORK|TIMED_OUT|EMPTY_RESPONSE)/.test(String(e))) throw e
+      await new Promise((r) => setTimeout(r, 1500 * t))
+    }
+  }
+}
+
+// Espera o componente carregar do banco; se a rede do ambiente de teste falhar, recarrega a página.
+async function esperarCarregado(pagina, seletor) {
+  for (let t = 1; t <= 4; t++) {
+    const el = pagina.locator(seletor).first()
+    await el.waitFor()
+    await pagina.waitForFunction((s) => !/carregando/.test(document.querySelector(s)?.textContent ?? ''), seletor, { timeout: 15000 }).catch(() => {})
+    if (/salvo/.test(await el.innerText())) return
+    await ir(pagina, pagina.url())
+  }
+  throw new Error(`não carregou: ${seletor}`)
+}
+
+async function entrar(pagina, email, senhaLogin) {
+  for (let t = 1; t <= 4; t++) {
+    try {
+      if (!pagina.url().includes('/login')) await ir(pagina, `${BASE}/login`)
+      await pagina.fill('#email', email)
+      await pagina.fill('#senha', senhaLogin)
+      await Promise.all([pagina.waitForURL('**/area', { timeout: 20000 }), pagina.click('button:has-text("Entrar")')])
+      return
+    } catch (e) {
+      if (t === 4) throw e
+      await ir(pagina, `${BASE}/login`)
+    }
+  }
+}
+
 const banco = () => JSON.parse(readFileSync(`${DADOS}/banco.json`, 'utf8'))
 const ultimaSenha = () => {
   const linhas = readFileSync(`${DADOS}/emails.log`, 'utf8').trim().split('\n').map((l) => JSON.parse(l)).filter((e) => e.para === EMAIL)
@@ -75,6 +113,13 @@ r = await postWebhook(envelope('purchase_approved', `${pid}-main`, PRINCIPAL))
 ok(r.json?.resultados?.[0]?.acao === 'duplicado', 'Reenvio do mesmo evento é ignorado (idempotente)')
 
 let senha = process.env.SENHA
+if (!DADOS && !senha) {
+  // Produção: sem acesso ao banco nem à caixa de e-mail, a senha vem pelo plano B com o código do pedido.
+  const resp = await fetch(`${BASE}/api/primeiro-acesso`, { method: 'POST', body: new URLSearchParams({ email: EMAIL, codigo: `${pid}-main`.slice(0, 7).toUpperCase() }), redirect: 'manual' })
+  const html = await resp.text()
+  senha = /class="s">([^<]+)</.exec(html)?.[1]?.trim()
+  ok(senha?.length === 10, 'Plano B (código do pedido) devolveu uma senha de 10 caracteres')
+}
 if (DADOS) {
   const m = banco().membros.find((x) => x.email === EMAIL)
   ok(!!m, 'Membro criado no banco', m && `id ${m.id}`)
@@ -85,13 +130,15 @@ if (DADOS) {
 }
 
 // 3) Navegador
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium' })
+const usarProxy = process.env.HTTPS_PROXY && !/localhost|127\.0\.0\.1/.test(BASE)
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium', ...(usarProxy ? { proxy: { server: process.env.HTTPS_PROXY } } : {}) })
 
 // 3a) Anônimo: tudo protegido
-const anon = await browser.newContext()
+const TLS = process.env.IGNORAR_TLS_PROXY ? { ignoreHTTPSErrors: true } : {}
+const anon = await browser.newContext({ ...TLS })
 const pa = await anon.newPage()
 for (const rota of ['/area', '/p/reserva-de-emergencia', '/p/calculadora?cap=2', '/conta']) {
-  await pa.goto(BASE + rota)
+  await ir(pa, BASE + rota)
   ok(new URL(pa.url()).pathname === '/login', `Anônimo em ${rota} é mandado para o login`)
 }
 const semSessao = await fetch(`${BASE}/api/progresso?chave=reserva-de-emergencia:cap1`)
@@ -103,18 +150,15 @@ ok(cookieForjado.status >= 300 && cookieForjado.status < 400, 'Cookie de sessão
 await anon.close()
 
 // 3b) Membro no celular
-const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })
+const ctx = await browser.newContext({ ...TLS, viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })
 const p = await ctx.newPage()
-await p.goto(`${BASE}/login`)
+await ir(p, `${BASE}/login`)
 await p.fill('#email', EMAIL)
 await p.fill('#senha', 'senha-errada-123')
 await p.click('button:has-text("Entrar")')
 ok(await p.locator('text=E-mail ou senha incorretos').isVisible(), 'Senha errada não entra')
 if (senha) {
-  await p.fill('#email', EMAIL)
-  await p.fill('#senha', senha)
-  await p.click('button:has-text("Entrar")')
-  await p.waitForURL('**/area')
+  await entrar(p, EMAIL, senha)
   ok(new URL(p.url()).pathname === '/area', 'Login com a senha do e-mail entra na área')
   const cookies = await ctx.cookies()
   const c = cookies.find((x) => x.name === 'sessao')
@@ -123,23 +167,22 @@ if (senha) {
 
   ok(await p.locator('article.produto.bloqueado').count() === 1, 'Produto não comprado (52 Semanas) aparece bloqueado')
 
-  await p.goto(`${BASE}/p/reserva-de-emergencia`)
+  await ir(p, `${BASE}/p/reserva-de-emergencia`)
   ok(await p.locator('h1:has-text("Quanto você precisa mesmo")').isVisible(), 'Capítulo 1 do guia abre')
   if (SHOTS) await p.screenshot({ path: `${SHOTS}/02-capitulo1-celular.png` })
   for (let n = 2; n <= 8; n++) {
-    await p.goto(`${BASE}/p/reserva-de-emergencia?cap=${n}`)
+    await ir(p, `${BASE}/p/reserva-de-emergencia?cap=${n}`)
     ok(await p.locator('.cabeca-capitulo h1').isVisible(), `Capítulo ${n} abre`, await p.locator('.cabeca-capitulo h1').innerText())
   }
 
   // checklist salva no banco e volta após recarregar
-  await p.goto(`${BASE}/p/reserva-de-emergencia?cap=1`)
+  await ir(p, `${BASE}/p/reserva-de-emergencia?cap=1`)
   const item = p.locator('.checklist .item-check input').first()
-  await item.waitFor()
-  await p.waitForSelector('.checklist .salvo:has-text("salvo")')
+  await esperarCarregado(p, '.checklist .salvo')
   await item.check()
   await p.waitForSelector('.checklist .salvo:has-text("✓ salvo")', { timeout: 5000 })
-  await p.reload()
-  await p.waitForSelector('.checklist .salvo:has-text("salvo")')
+  await ir(p, p.url())
+  await esperarCarregado(p, '.checklist .salvo')
   ok(await p.locator('.checklist .item-check input').first().isChecked(), 'Checklist salva o progresso no banco (continua marcado após recarregar)')
 
   await ctx.grantPermissions(['clipboard-read', 'clipboard-write'])
@@ -149,20 +192,20 @@ if (senha) {
   ok(copiou && (area === '' || area.includes('CUSTO ESSENCIAL')), 'Botão de copiar template funciona', area ? 'conteúdo conferido na área de transferência' : '')
 
   // calculadora
-  await p.goto(`${BASE}/p/calculadora?cap=1`)
+  await ir(p, `${BASE}/p/calculadora?cap=1`)
   await p.waitForSelector('#d-moradia')
   await p.fill('#d-moradia', '700'); await p.fill('#d-casa', '200'); await p.fill('#d-comunicacao', '100'); await p.fill('#d-alimentacao', '300'); await p.fill('#d-transporte', '100')
   const custo = await p.locator('.destaque.ouro b').first().innerText()
   ok(custo.replace(/\s/g, ' ').includes('1.400,00'), 'Calculadora soma o custo essencial na hora', custo)
   await p.waitForSelector('.ferramenta .salvo:has-text("✓ salvo")', { timeout: 5000 })
   if (SHOTS) await p.screenshot({ path: `${SHOTS}/03-calculadora-celular.png`, fullPage: true })
-  await p.goto(`${BASE}/p/calculadora?cap=3`)
+  await ir(p, `${BASE}/p/calculadora?cap=3`)
   await p.waitForSelector('#p-prazo')
   const mensal = await p.locator('.destaque.ouro b').first().innerText()
   ok(mensal.replace(/\s/g, ' ').includes('466,67'), 'Seu número e valor mensal calculados a partir do capítulo 1 (R$ 8.400 ÷ 18)', mensal)
 
   // produto não comprado
-  await p.goto(`${BASE}/p/52-semanas`)
+  await ir(p, `${BASE}/p/52-semanas`)
   ok(new URL(p.url()).pathname === '/area', 'Produto não comprado redireciona para a área')
 
   // download do comprado
@@ -172,38 +215,38 @@ if (senha) {
   ok(proibido.status() === 403, 'Download de produto não comprado é negado', `HTTP ${proibido.status()}`)
 
   // desktop
-  const d = await browser.newContext({ viewport: { width: 1366, height: 900 }, storageState: await ctx.storageState() })
+  const d = await browser.newContext({ ...TLS, viewport: { width: 1366, height: 900 }, storageState: await ctx.storageState() })
   const pd = await d.newPage()
-  await pd.goto(`${BASE}/p/reserva-de-emergencia?cap=3`)
+  await ir(pd, `${BASE}/p/reserva-de-emergencia?cap=3`)
   if (SHOTS) await pd.screenshot({ path: `${SHOTS}/04-capitulo3-desktop.png` })
   await d.close()
 
   // 4) Reembolso revoga
   r = await postWebhook(envelope('refund', `${pid}-bump`, BUMP1, 'refunded'))
   ok(r.json?.resultados?.[0]?.acao === 'revogado', 'refund recebido e aceito', JSON.stringify(r.json?.resultados))
-  await p.goto(`${BASE}/p/calculadora`)
+  await ir(p, `${BASE}/p/calculadora`)
   ok(new URL(p.url()).pathname === '/area', 'Depois do reembolso, a Calculadora deixa de abrir (acesso revogado na hora)')
 
   // 5) Sair
-  await p.goto(`${BASE}/area`)
+  await ir(p, `${BASE}/area`)
   await p.click('button:has-text("Sair")')
-  await p.goto(`${BASE}/area`)
+  await ir(p, `${BASE}/area`)
   ok(new URL(p.url()).pathname === '/login', 'Depois de sair, a área volta a exigir login')
 
   // 6) Plano B
   if (DADOS) {
-    await p.goto(`${BASE}/primeiro-acesso`)
+    await ir(p, `${BASE}/primeiro-acesso`)
     await p.fill('#email', EMAIL)
     await p.click('button:has-text("Enviar nova senha")')
     ok(await p.locator('text=uma nova senha acabou de ser enviada').isVisible(), '/primeiro-acesso confirma o envio')
     const nova = ultimaSenha()
     ok(nova !== senha, 'Plano B gerou uma senha nova')
-    await p.goto(`${BASE}/login`)
+    await ir(p, `${BASE}/login`)
     await p.fill('#email', EMAIL); await p.fill('#senha', nova); await p.click('button:has-text("Entrar")')
     await p.waitForURL('**/area')
     ok(new URL(p.url()).pathname === '/area', 'Login com a senha do plano B entra')
     await p.click('button:has-text("Sair")')
-    await p.goto(`${BASE}/primeiro-acesso?falhou=1&email=${encodeURIComponent(EMAIL)}`)
+    await ir(p, `${BASE}/primeiro-acesso?falhou=1&email=${encodeURIComponent(EMAIL)}`)
     await p.fill('#codigo', `${pid}-main`.slice(0, 7).toUpperCase())
     await p.click('button:has-text("Ver nova senha")')
     const naTela = (await p.locator('.s').innerText()).trim()
@@ -213,5 +256,6 @@ if (senha) {
   }
 }
 await browser.close()
+if (!DADOS && senha) console.log(`\nMembro de teste: ${EMAIL} · senha atual: ${senha}`)
 console.log(`\n${falhas ? `❌ ${falhas} checagem(ns) falharam` : '✅ Todas as checagens passaram'}\n`)
 process.exit(falhas ? 1 : 0)
