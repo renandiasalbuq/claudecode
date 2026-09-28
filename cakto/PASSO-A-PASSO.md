@@ -35,7 +35,7 @@ Para **cada um dos 3 produtos** (cada bump é um produto próprio e precisa da p
 > ⚠️ Não confirmei na documentação da Cakto se a área de membros aceita anexar `.xlsx`. Se não aceitar: (1) suba o arquivo no Google Drive, (2) compartilhe como "qualquer pessoa com o link pode ver", (3) coloque o link na descrição da aula, junto com o PDF "Como usar". Também vale confirmar com o suporte da Cakto (infoprodutores@cakto.com.br) se quem compra o bump junto com o principal recebe o acesso aos dois automaticamente.
 
 ## Passo 3: imagens do painel (prontas, falta subir)
-Todas estão em `cakto/imagens/painel/`, no **tamanho exato** pedido pelo painel. Nenhuma precisa ser redimensionada.
+Todas estão em `cakto/imagens/painel/`, no **tamanho exato** pedido pelo painel. Elas são renderizadas em 4x e reduzidas com filtro de alta qualidade, o que deixa textos e bordas nítidos.
 
 | Onde no painel | Tamanho | Principal | Calculadora (bump 1) | 52 Semanas (bump 2) |
 |---|---|---|---|---|
@@ -44,13 +44,15 @@ Todas estão em `cakto/imagens/painel/`, no **tamanho exato** pedido pelo painel
 | Capa do módulo (área de membros) | 400×600 | `01-principal-modulo-400x600.png` | `02-calculadora-modulo-400x600.png` | `03-52semanas-modulo-400x600.png` |
 | Banner do produto | 1920×480 | `01-principal-banner-1920x480.png` | `02-calculadora-banner-1920x480.png` | `03-52semanas-banner-1920x480.png` |
 
+**Versões `@2x`:** cada imagem também tem uma versão com o dobro de pixels e a **mesma proporção** (ex.: `…-300x250@2x.png` tem 600×500). Use primeiro a de tamanho exato. Se no painel ou no celular ela parecer pouco nítida, troque pela `@2x`: como a proporção é igual, ela não distorce.
+
 - [ ] Suba cada imagem no campo correspondente dos 3 produtos.
 - [ ] Depois de subir, abra a pré-visualização. Se alguma aparecer cortada ou esticada, me diga em qual campo e o que foi cortado.
 - [ ] (Opcional) No produto principal → Order bumps → ativar "Exibir imagem" nos 2 bumps.
 
 Nos banners, textos e ilustrações ficam na faixa central (entre 260 e 1660 px na horizontal), para não serem cortados em telas estreitas.
 
-As versões anteriores (`imagens/300x250/` e as quadradas de 1080×1080) continuam no repositório. As quadradas servem para redes sociais e anúncios.
+Para redes sociais e anúncios, há versões quadradas de 1080×1080 em `cakto/imagens/quadradas/`.
 
 ## Passo 4: pagamento
 Os produtos nasceram com Pix, cartão, 3DS, PicPay, Google Pay e Apple Pay ativos.
