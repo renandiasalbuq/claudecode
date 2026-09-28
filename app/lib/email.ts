@@ -6,7 +6,7 @@ type Mensagem = { para: string; assunto: string; html: string; texto: string }
 
 // Envia pelo Resend (API REST). Sem RESEND_API_KEY fora de produção, grava em
 // dados-locais/emails.log para os testes locais.
-export async function enviarEmail(m: Mensagem): Promise<{ ok: boolean; erro?: string }> {
+export async function enviarEmail(m: Mensagem): Promise<{ ok: boolean; erro?: string; aviso?: string }> {
   const chave = envOpcional('RESEND_API_KEY')
   if (!chave) {
     if (process.env.NODE_ENV === 'production' && !envOpcional('PERMITIR_BANCO_MEMORIA')) return { ok: false, erro: 'RESEND_API_KEY ausente' }
@@ -14,18 +14,39 @@ export async function enviarEmail(m: Mensagem): Promise<{ ok: boolean; erro?: st
     appendFileSync(join(process.cwd(), 'dados-locais', 'emails.log'), JSON.stringify({ ...m, em: new Date().toISOString() }) + '\n')
     return { ok: true }
   }
-  try {
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${chave}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: env('EMAIL_FROM'), to: [m.para], subject: m.assunto, html: m.html, text: m.texto }),
-      signal: AbortSignal.timeout(5000),
-    })
-    if (!r.ok) return { ok: false, erro: `Resend ${r.status}: ${(await r.text()).slice(0, 300)}` }
-    return { ok: true }
-  } catch (e) {
-    return { ok: false, erro: String(e) }
+  const { nome, endereco } = lerRemetente(env('EMAIL_FROM'))
+  if (!endereco) return { ok: false, erro: 'EMAIL_FROM sem um endereço de e-mail válido' }
+  // Tenta primeiro com o nome de exibição; se o Resend recusar o campo `from`
+  // (ex.: nome com caractere que ele não aceita), reenvia só com o endereço.
+  const tentativas = nome ? [`${nome} <${endereco}>`, endereco] : [endereco]
+  let erro = ''
+  for (const from of tentativas) {
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${chave}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from, to: [m.para], subject: m.assunto, html: m.html, text: m.texto, ...(envOpcional('EMAIL_REPLY_TO') ? { reply_to: envOpcional('EMAIL_REPLY_TO') } : {}) }),
+        signal: AbortSignal.timeout(5000),
+      })
+      if (r.ok) return { ok: true, ...(from !== tentativas[0] ? { aviso: 'enviado sem o nome do remetente' } : {}) }
+      const corpo = await r.text()
+      erro = `Resend ${r.status}: ${corpo.slice(0, 300)}`
+      if (!(r.status === 422 && /from/i.test(corpo))) break
+    } catch (e) {
+      erro = String(e)
+      break
+    }
   }
+  return { ok: false, erro }
+}
+
+// Aceita "Nome <email@dominio>", "email@dominio", com ou sem aspas em volta (erro comum ao colar na Vercel).
+export function lerRemetente(bruto: string): { nome: string; endereco: string } {
+  const v = bruto.trim().replace(/^["']+|["']+$/g, '').trim()
+  const m = /^(.*?)\s*<\s*([^<>\s]+@[^<>\s]+)\s*>$/.exec(v)
+  const nome = (m ? m[1] : '').trim().replace(/^["']+|["']+$/g, '').trim()
+  const endereco = (m ? m[2] : v).trim()
+  return { nome, endereco: /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(endereco) ? endereco : '' }
 }
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)

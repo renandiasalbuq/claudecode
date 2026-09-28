@@ -40,6 +40,7 @@ export async function processarEnvelope(env: EnvelopeCakto, log: (m: string) => 
       const { criado } = await db().liberarProduto(email, await hashSenha(senha), produto.caktoId)
       let envio: Resultado['email'] = 'nao_necessario'
       let msg = null
+      let detalheEmail: string | undefined
       if (criado) msg = emailBoasVindas(email, senha)
       else {
         const m = await db().buscarMembroPorEmail(email)
@@ -49,9 +50,10 @@ export async function processarEnvelope(env: EnvelopeCakto, log: (m: string) => 
         const r = await enviarEmail(msg)
         envio = r.ok ? 'enviado' : 'falhou'
         if (!r.ok) log(`[webhook] e-mail para ${email} falhou: ${r.erro}`)
+        detalheEmail = r.ok ? r.aviso : r.erro?.slice(0, 200)
       }
       await db().registrarEvento({ pedido_id: p.id, evento, ref_id: p.refId?.toUpperCase() ?? null, email, produto_id: produto.caktoId })
-      resultados.push({ ...base, acao: 'liberado', membroCriado: criado, email: envio })
+      resultados.push({ ...base, acao: 'liberado', membroCriado: criado, email: envio, ...(detalheEmail ? { detalhe: detalheEmail } : {}) })
     } else {
       const ok = await db().revogarProduto(email, produto.caktoId)
       await db().registrarEvento({ pedido_id: p.id, evento, ref_id: p.refId?.toUpperCase() ?? null, email, produto_id: produto.caktoId })
